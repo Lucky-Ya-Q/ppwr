@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.test.mapper.PwPesticideBasicInfoMapper">
+    <select id="queryList" resultType="com.ruoyi.test.domain.PwPesticideBasicInfo">
+        select *
+        from pw_pesticide_basic_info
+        <where>
+            <if test="name != null  and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="manufacturer != null  and manufacturer != ''">
+                and manufacturer like concat('%', #{manufacturer}, '%')
+            </if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''">
+                and CREATE_TIME between #{params.beginCreateTime} and #{params.endCreateTime}
+            </if>
+        </where>
+    </select>
+</mapper>

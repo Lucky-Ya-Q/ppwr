@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.test.mapper.PwOrderMapper">
+    <select id="queryList" resultType="com.ruoyi.test.domain.PwOrder">
+        select *
+        from pw_order
+        <where>
+            <if test="orderNumber != null  and orderNumber != ''">
+                and order_number like concat('%', #{orderNumber}, '%')
+            </if>
+            <if test="buyerName != null  and buyerName != ''">
+                and buyer_name like concat('%', #{buyerName}, '%')
+            </if>
+            <if test="buyerPhone != null  and buyerPhone != ''">
+                and buyer_phone like concat('%', #{buyerPhone}, '%')
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime}
+            </if>
+        </where>
+    </select>
+</mapper>
