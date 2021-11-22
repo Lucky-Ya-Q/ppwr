@@ -5,6 +5,7 @@ import com.ruoyi.test.domain.po.OrderDetail;
 import com.ruoyi.test.domain.vo.Order;
 import com.ruoyi.test.domain.vo.PutStorage;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IStatisticalService {
@@ -21,4 +22,6 @@ public interface IStatisticalService {
     Map<String, String> count(BaseEntity baseEntity);
 
     void qingyun();
+
+    List<Map<String, Object>> quxianxshs();
 }

@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.test.domain.*;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +63,7 @@ public class StatisticalServiceImpl implements IStatisticalService {
             pwPesticideInventoryMapper.insert(pwPesticideInventory);
         } else {
             // 修改库存
-            statisticalMapper.putStorage(putStorage);
+            statisticalMapper.putStorage(putStorage, SecurityUtils.getDeptId());
         }
 
         // 入库记录
@@ -151,5 +153,18 @@ public class StatisticalServiceImpl implements IStatisticalService {
     @Override
     public void qingyun() {
         statisticalMapper.qingyun(SecurityUtils.getDeptId());
+    }
+
+    @Override
+    public List<Map<String, Object>> quxianxshs() {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        List<SysDept> sysDeptList = statisticalMapper.getNextOneByDeptId(103);
+        for (SysDept sysDept : sysDeptList) {
+            Map<String, Object> map = statisticalMapper.quxianxshs(sysDept.getDeptId());
+            map.put("deptName", sysDept.getDeptName());
+            map.put("deptId", sysDept.getDeptId());
+            mapList.add(map);
+        }
+        return mapList;
     }
 }

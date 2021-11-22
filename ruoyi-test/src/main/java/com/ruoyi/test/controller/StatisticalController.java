@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Api(tags = "业务模块")
@@ -62,10 +63,31 @@ public class StatisticalController {
         return AjaxResult.success();
     }
 
-    @ApiOperation(value = "统计")
+    @ApiOperation(value = "底部统计")
     @GetMapping("count")
     public AjaxResult count() {
         Map<String, String> map = statisticalService.count(new BaseEntity());
         return AjaxResult.success(map);
+    }
+
+    @ApiOperation(value = "各县区农药包装销售回收情况")
+    @GetMapping("quxianxshs")
+    public AjaxResult quxianxshs() {
+        List<Map<String, Object>> mapList = statisticalService.quxianxshs();
+        return AjaxResult.success(mapList);
+    }
+
+    @ApiOperation(value = "各月份农药包装销售回收情况")
+    @GetMapping("yuefenxshs")
+    public AjaxResult yuefenxshs() {
+//        Map<String, String> map = statisticalService.yuefenxshs();
+        return AjaxResult.success();
+    }
+
+    @ApiOperation(value = "各月份农药包装回收处置情况")
+    @GetMapping("quxianhscz")
+    public AjaxResult quxianhscz() {
+//        Map<String, String> map = statisticalService.quxianhscz();
+        return AjaxResult.success();
     }
 }

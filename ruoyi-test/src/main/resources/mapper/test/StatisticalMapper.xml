@@ -3,10 +3,11 @@
 <mapper namespace="com.ruoyi.test.mapper.StatisticalMapper">
     <update id="putStorage">
         update pw_pesticide_inventory
-        set price=#{price},
-        deposit=#{deposit},
-        number=number + #{number}
-        where basic_info_id = #{basicInfoId}
+        set price=#{putStorage.price},
+        deposit=#{putStorage.deposit},
+        number=number + #{putStorage.number}
+        where basic_info_id = #{putStorage.basicInfoId}
+        and DEPT_ID = #{deptId}
     </update>
 
     <update id="reduceStorage">
@@ -39,22 +40,23 @@
 
     <select id="count" resultType="java.util.Map">
         SELECT *,
-        ifnull(CONCAT(ROUND(t2.yhsCount / t1.xsCount * 100, 2), '%'), '0.00%') percentage
-        FROM (SELECT ifnull(sum(oi.number), 0) xsCount, ifnull(sum((oi.price + oi.deposit) * oi.number), 0) price
+        ifnull(CONCAT(ROUND(t2.yhsCount / t1.yxsCount * 100, 2), '%'), '0.00%') percentage
+        FROM (SELECT ifnull(sum(oi.number), 0) yxsCount, ifnull(sum((oi.price + oi.deposit) * oi.number), 0) price
         FROM pw_order_item oi
         left join sys_dept d on d.dept_id = oi.dept_id
         left join sys_user u on u.user_id = oi.user_id
         WHERE is_return = 0 ${params.dataScope}) t1,
-        (SELECT ifnull(count(oi.id), 0) yhsCount
+        (SELECT ifnull(count(oi.number), 0) yhsCount
         FROM pw_order_item oi
         left join sys_dept d on d.dept_id = oi.dept_id
         left join sys_user u on u.user_id = oi.user_id
         WHERE is_recycle = 1 ${params.dataScope}) t2,
-        (SELECT ifnull(count(oi.id), 0) dqyCount
+        (SELECT ifnull(count(oi.number), 0) dqyCount
         FROM pw_order_item oi
         left join sys_dept d on d.dept_id = oi.dept_id
         left join sys_user u on u.user_id = oi.user_id
-        WHERE is_clear = 0 and is_recycle = 1 ${params.dataScope}) t3
+        WHERE is_clear = 0
+        and is_recycle = 1 ${params.dataScope}) t3
     </select>
 
     <update id="qingyun">
@@ -64,4 +66,28 @@
         where is_recycle = 1
         and DEPT_ID = #{deptId}
     </update>
+
+    <select id="getNextOneByDeptId" resultType="com.ruoyi.common.core.domain.entity.SysDept">
+        select *
+        from sys_dept
+        where del_flag = 0
+        and parent_id = #{deptId}
+    </select>
+
+    <select id="quxianxshs" resultType="java.util.Map">
+        select *, ifnull(CONCAT(ROUND(t2.yhsCount / t1.yxsCount * 100, 2), '%'), '0.00%') percentage
+        from (select ifnull(sum(oi.number), 0) yxsCount
+        from sys_dept d
+        left join pw_order_item oi on d.dept_id = oi.DEPT_ID
+        where d.del_flag = 0
+        and year(oi.create_time) = year(now())
+        and (d.dept_id = #{deptId} or d.ancestors like '%${deptId}%')) t1,
+        (select ifnull(sum(oi.number), 0) yhsCount
+        from sys_dept d
+        left join pw_order_item oi on d.dept_id = oi.DEPT_ID
+        where d.del_flag = 0
+        and year(oi.create_time) = year(now())
+        and (d.dept_id = #{deptId} or d.ancestors like '%${deptId}%')
+        and oi.is_recycle = 1) t2
+    </select>
 </mapper>
