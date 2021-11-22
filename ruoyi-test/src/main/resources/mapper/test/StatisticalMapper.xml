@@ -49,7 +49,12 @@
         FROM pw_order_item oi
         left join sys_dept d on d.dept_id = oi.dept_id
         left join sys_user u on u.user_id = oi.user_id
-        WHERE is_recycle = 1 ${params.dataScope}) t2
+        WHERE is_recycle = 1 ${params.dataScope}) t2,
+        (SELECT ifnull(count(oi.id), 0) dqyCount
+        FROM pw_order_item oi
+        left join sys_dept d on d.dept_id = oi.dept_id
+        left join sys_user u on u.user_id = oi.user_id
+        WHERE is_clear = 0 and is_recycle = 1 ${params.dataScope}) t3
     </select>
 
     <update id="qingyun">
