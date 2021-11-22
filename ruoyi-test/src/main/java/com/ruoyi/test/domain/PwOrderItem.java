@@ -25,7 +25,6 @@ public class PwOrderItem extends BaseEntity {
     /**
      * ID
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

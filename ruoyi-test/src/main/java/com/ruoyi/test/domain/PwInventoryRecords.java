@@ -23,7 +23,6 @@ public class PwInventoryRecords extends BaseEntity {
     /**
      * ID
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
