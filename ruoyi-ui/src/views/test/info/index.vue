@@ -87,7 +87,12 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="农药名称" align="center" prop="name" />
-      <el-table-column label="产品包装" align="center" prop="imgs" />
+      <el-table-column label="产品包装" align="center" prop="imgs">
+        <template slot-scope="scope">
+          <img v-for="(img,index) in scope.row.imgs.split(',')" :key="index"
+               :src="'/dev-api'+img" alt="" style="width: 45px;height: 45px">
+        </template>
+      </el-table-column>
       <el-table-column label="生产厂家" align="center" prop="manufacturer" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -114,7 +119,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

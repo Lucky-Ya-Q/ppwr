@@ -39,6 +39,16 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="是否清运" prop="isClear">
+        <el-select v-model="queryParams.isClear" placeholder="请选择是否清运" clearable size="small">
+          <el-option
+            v-for="dict in dict.type.pw_is_clear"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
           v-model="daterangeCreateTime"
@@ -107,7 +117,12 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="农药名称" align="center" prop="name" />
-      <el-table-column label="产品包装" align="center" prop="imgs" />
+      <el-table-column label="产品包装" align="center" prop="imgs">
+        <template slot-scope="scope">
+          <img v-for="(img,index) in scope.row.imgs.split(',')" :key="index"
+               :src="'/dev-api'+img" alt="" style="width: 45px;height: 45px">
+        </template>
+      </el-table-column>
       <el-table-column label="生产厂家" align="center" prop="manufacturer" />
       <el-table-column label="价格" align="center" prop="price" />
       <el-table-column label="押金" align="center" prop="deposit" />
@@ -133,6 +148,16 @@
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="是否清运" align="center" prop="isClear">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.pw_is_clear" :value="scope.row.isClear"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="清运时间" align="center" prop="clearTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.clearTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -157,7 +182,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -217,6 +242,24 @@
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
+        <el-form-item label="是否清运" prop="isClear">
+          <el-select v-model="form.isClear" placeholder="请选择是否清运">
+            <el-option
+              v-for="dict in dict.type.pw_is_clear"
+              :key="dict.value"
+              :label="dict.label"
+              :value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="清运时间" prop="clearTime">
+          <el-date-picker clearable size="small"
+            v-model="form.clearTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择清运时间">
+          </el-date-picker>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -231,7 +274,7 @@ import { listItem, getItem, delItem, addItem, updateItem } from "@/api/test/item
 
 export default {
   name: "Item",
-  dicts: ['pw_is_recycle', 'pw_is_return'],
+  dicts: ['pw_is_recycle', 'pw_is_return', 'pw_is_clear'],
   data() {
     return {
       // 遮罩层
@@ -252,7 +295,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      // 备注时间范围
+      // 清运时间时间范围
       daterangeCreateTime: [],
       // 查询参数
       queryParams: {
@@ -262,6 +305,7 @@ export default {
         manufacturer: null,
         isRecycle: null,
         isReturn: null,
+        isClear: null,
         createTime: null,
       },
       // 表单参数
@@ -311,6 +355,8 @@ export default {
         isReturn: null,
         returnTime: null,
         remark: null,
+        isClear: null,
+        clearTime: null,
         userId: null,
         deptId: null,
         createBy: null,
