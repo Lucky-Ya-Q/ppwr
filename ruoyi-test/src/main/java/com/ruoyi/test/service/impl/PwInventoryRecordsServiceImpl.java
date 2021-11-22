@@ -1,6 +1,7 @@
 package com.ruoyi.test.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.test.domain.PwInventoryRecords;
 import com.ruoyi.test.mapper.PwInventoryRecordsMapper;
 import com.ruoyi.test.service.IPwInventoryRecordsService;
@@ -21,6 +22,7 @@ public class PwInventoryRecordsServiceImpl extends ServiceImpl<PwInventoryRecord
     private PwInventoryRecordsMapper pwInventoryRecordsMapper;
 
     @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
     public List<PwInventoryRecords> queryList(PwInventoryRecords pwInventoryRecords) {
         return pwInventoryRecordsMapper.queryList(pwInventoryRecords);
     }

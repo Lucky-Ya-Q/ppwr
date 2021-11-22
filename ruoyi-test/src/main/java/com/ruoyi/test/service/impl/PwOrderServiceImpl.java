@@ -1,6 +1,7 @@
 package com.ruoyi.test.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.test.domain.PwOrder;
 import com.ruoyi.test.mapper.PwOrderMapper;
 import com.ruoyi.test.service.IPwOrderService;
@@ -21,6 +22,7 @@ public class PwOrderServiceImpl extends ServiceImpl<PwOrderMapper, PwOrder> impl
     private PwOrderMapper pwOrderMapper;
 
     @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
     public List<PwOrder> queryList(PwOrder pwOrder) {
         return pwOrderMapper.queryList(pwOrder);
     }

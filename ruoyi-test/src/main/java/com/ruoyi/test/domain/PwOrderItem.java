@@ -101,6 +101,19 @@ public class PwOrderItem extends BaseEntity {
     private Date returnTime;
 
     /**
+     * 是否清运
+     */
+    @Excel(name = "是否清运")
+    private Long isClear;
+
+    /**
+     * 清运时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "清运时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date clearTime;
+
+    /**
      * 用户ID
      */
     @TableField(fill = FieldFill.INSERT)

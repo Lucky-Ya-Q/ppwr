@@ -1,6 +1,7 @@
 package com.ruoyi.test.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.test.domain.PwPesticideInventory;
 import com.ruoyi.test.mapper.PwPesticideInventoryMapper;
 import com.ruoyi.test.service.IPwPesticideInventoryService;
@@ -21,6 +22,7 @@ public class PwPesticideInventoryServiceImpl extends ServiceImpl<PwPesticideInve
     private PwPesticideInventoryMapper pwPesticideInventoryMapper;
 
     @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
     public List<PwPesticideInventory> queryList(PwPesticideInventory pwPesticideInventory) {
         return pwPesticideInventoryMapper.queryList(pwPesticideInventory);
     }

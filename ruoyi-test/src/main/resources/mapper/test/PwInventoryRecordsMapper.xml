@@ -4,8 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.test.mapper.PwInventoryRecordsMapper">
     <select id="queryList" resultType="com.ruoyi.test.domain.PwInventoryRecords">
-        select *
-        from pw_inventory_records
+        select ir.*
+        from pw_inventory_records ir
+        left join sys_dept d on d.dept_id = ir.dept_id
+        left join sys_user u on u.user_id = ir.user_id
         <where>
             <if test="name != null  and name != ''">
                 and name like concat('%', #{name}, '%')
@@ -16,6 +18,8 @@
             <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''">
                 and CREATE_TIME between #{params.beginCreateTime} and #{params.endCreateTime}
             </if>
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
         </where>
     </select>
 </mapper>

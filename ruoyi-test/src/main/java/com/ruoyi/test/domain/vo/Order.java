@@ -20,8 +20,8 @@ public class Order {
     private String buyerPhone;
 
     /**
-     * 订单项ID列表
+     * 库存ID列表
      */
-    @ApiModelProperty("订单项ID列表")
-    private List<Long> itemIdList;
+    @ApiModelProperty("库存ID列表")
+    private List<Long> inventoryIdList;
 }

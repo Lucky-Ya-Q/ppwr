@@ -8,4 +8,55 @@
         number=number + #{number}
         where basic_info_id = #{basicInfoId}
     </update>
+
+    <update id="reduceStorage">
+        update pw_pesticide_inventory
+        set number=number - #{number}
+        where ID = #{inventoryId}
+        and number >= #{number}
+        and DEPT_ID = #{deptId}
+    </update>
+
+    <update id="huishou">
+        update pw_order_item
+        set is_recycle = 1,
+        recycle_time = now()
+        where ID = #{itemId}
+        and is_recycle = 0
+        and is_return = 0
+        and DEPT_ID = #{deptId}
+    </update>
+
+    <update id="tuihuo">
+        update pw_order_item
+        set is_return = 1,
+        return_time = now()
+        where ID = #{itemId}
+        and is_return = 0
+        and is_recycle = 0
+        and DEPT_ID = #{deptId}
+    </update>
+
+    <select id="count" resultType="java.util.Map">
+        SELECT *,
+        ifnull(CONCAT(ROUND(t2.yhsCount / t1.xsCount * 100, 2), '%'), '0.00%') percentage
+        FROM (SELECT ifnull(sum(oi.number), 0) xsCount, ifnull(sum((oi.price + oi.deposit) * oi.number), 0) price
+        FROM pw_order_item oi
+        left join sys_dept d on d.dept_id = oi.dept_id
+        left join sys_user u on u.user_id = oi.user_id
+        WHERE is_return = 0 ${params.dataScope}) t1,
+        (SELECT ifnull(count(oi.id), 0) yhsCount
+        FROM pw_order_item oi
+        left join sys_dept d on d.dept_id = oi.dept_id
+        left join sys_user u on u.user_id = oi.user_id
+        WHERE is_recycle = 1 ${params.dataScope}) t2
+    </select>
+
+    <update id="qingyun">
+        update pw_order_item
+        set is_clear = 1,
+        clear_time = now()
+        where is_recycle = 1
+        and DEPT_ID = #{deptId}
+    </update>
 </mapper>
