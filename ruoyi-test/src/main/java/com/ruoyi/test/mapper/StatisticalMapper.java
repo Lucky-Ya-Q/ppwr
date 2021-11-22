@@ -24,4 +24,8 @@ public interface StatisticalMapper {
     List<SysDept> getNextOneByDeptId(int deptId);
 
     Map<String, Object> quxianxshs(Long deptId);
+
+    List<Map<String, Object>> yuefenxshs();
+
+    List<Map<String, Object>> quxianhscz();
 }

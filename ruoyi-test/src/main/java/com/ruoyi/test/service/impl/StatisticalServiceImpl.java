@@ -116,6 +116,7 @@ public class StatisticalServiceImpl implements IStatisticalService {
             pwOrderItem.setNumber(1L);
             pwOrderItem.setIsRecycle(0L);
             pwOrderItem.setIsReturn(0L);
+            pwOrderItem.setIsClear(0L);
             pwOrderItemMapper.insert(pwOrderItem);
         }
     }
@@ -166,5 +167,15 @@ public class StatisticalServiceImpl implements IStatisticalService {
             mapList.add(map);
         }
         return mapList;
+    }
+
+    @Override
+    public List<Map<String, Object>> yuefenxshs() {
+        return statisticalMapper.yuefenxshs();
+    }
+
+    @Override
+    public List<Map<String, Object>> quxianhscz() {
+        return statisticalMapper.quxianhscz();
     }
 }

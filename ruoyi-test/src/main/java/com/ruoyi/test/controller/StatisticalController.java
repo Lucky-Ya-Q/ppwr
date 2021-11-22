@@ -80,14 +80,14 @@ public class StatisticalController {
     @ApiOperation(value = "各月份农药包装销售回收情况")
     @GetMapping("yuefenxshs")
     public AjaxResult yuefenxshs() {
-//        Map<String, String> map = statisticalService.yuefenxshs();
-        return AjaxResult.success();
+        List<Map<String, Object>> mapList = statisticalService.yuefenxshs();
+        return AjaxResult.success(mapList);
     }
 
     @ApiOperation(value = "各月份农药包装回收处置情况")
     @GetMapping("quxianhscz")
     public AjaxResult quxianhscz() {
-//        Map<String, String> map = statisticalService.quxianhscz();
-        return AjaxResult.success();
+        List<Map<String, Object>> mapList = statisticalService.quxianhscz();
+        return AjaxResult.success(mapList);
     }
 }

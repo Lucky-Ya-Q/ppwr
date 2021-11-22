@@ -24,4 +24,8 @@ public interface IStatisticalService {
     void qingyun();
 
     List<Map<String, Object>> quxianxshs();
+
+    List<Map<String, Object>> yuefenxshs();
+
+    List<Map<String, Object>> quxianhscz();
 }
