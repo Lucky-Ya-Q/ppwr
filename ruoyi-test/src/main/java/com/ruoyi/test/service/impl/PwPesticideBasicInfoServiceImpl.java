@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.test.domain.PwPesticideBasicInfo;
 import com.ruoyi.test.mapper.PwPesticideBasicInfoMapper;
 import com.ruoyi.test.service.IPwPesticideBasicInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +16,8 @@ import java.util.List;
  */
 @Service
 public class PwPesticideBasicInfoServiceImpl extends ServiceImpl<PwPesticideBasicInfoMapper, PwPesticideBasicInfo> implements IPwPesticideBasicInfoService {
-    @Autowired
-    private PwPesticideBasicInfoMapper pwPesticideBasicInfoMapper;
-
     @Override
     public List<PwPesticideBasicInfo> queryList(PwPesticideBasicInfo pwPesticideBasicInfo) {
-        return pwPesticideBasicInfoMapper.queryList(pwPesticideBasicInfo);
+        return baseMapper.queryList(pwPesticideBasicInfo);
     }
 }

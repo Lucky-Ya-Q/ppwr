@@ -5,7 +5,6 @@ import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.test.domain.PwOrder;
 import com.ruoyi.test.mapper.PwOrderMapper;
 import com.ruoyi.test.service.IPwOrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +17,9 @@ import java.util.List;
  */
 @Service
 public class PwOrderServiceImpl extends ServiceImpl<PwOrderMapper, PwOrder> implements IPwOrderService {
-    @Autowired
-    private PwOrderMapper pwOrderMapper;
-
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<PwOrder> queryList(PwOrder pwOrder) {
-        return pwOrderMapper.queryList(pwOrder);
+        return baseMapper.queryList(pwOrder);
     }
 }

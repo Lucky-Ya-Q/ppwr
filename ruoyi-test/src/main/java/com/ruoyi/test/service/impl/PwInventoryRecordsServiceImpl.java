@@ -5,7 +5,6 @@ import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.test.domain.PwInventoryRecords;
 import com.ruoyi.test.mapper.PwInventoryRecordsMapper;
 import com.ruoyi.test.service.IPwInventoryRecordsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +17,9 @@ import java.util.List;
  */
 @Service
 public class PwInventoryRecordsServiceImpl extends ServiceImpl<PwInventoryRecordsMapper, PwInventoryRecords> implements IPwInventoryRecordsService {
-    @Autowired
-    private PwInventoryRecordsMapper pwInventoryRecordsMapper;
-
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<PwInventoryRecords> queryList(PwInventoryRecords pwInventoryRecords) {
-        return pwInventoryRecordsMapper.queryList(pwInventoryRecords);
+        return baseMapper.queryList(pwInventoryRecords);
     }
 }
